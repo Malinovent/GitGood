@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private int damage;
 
     private Rigidbody2D rb;
 
@@ -20,5 +21,25 @@ public class Projectile : MonoBehaviour
         rb.velocity = new Vector2(speed * -direction, 0);
     }
 
-    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Option 2
+        Health health = collision.GetComponent<Health>();
+
+        if(health != null)
+        {
+            health.TakeDamage(damage);
+            Destroy(this.gameObject);
+        }
+
+        /*
+        //Option 1
+        if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Health>().TakeDamage(damage);
+            Destroy(this.gameObject);
+        }*/
+    }
+
+
 }

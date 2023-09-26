@@ -11,6 +11,7 @@ public class Movement2DRigidbody : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
     [SerializeField] private Rigidbody2D rigidbody2D;
+    [SerializeField] private int maxJumps = 1;
 
     private int jumpCount = 0;
 
@@ -44,17 +45,30 @@ public class Movement2DRigidbody : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        jumpCount = 0;
+        
     }
+
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        float yNormal = collision.contacts[0].normal.y;
+
+        if (yNormal > 0.8f)
+        {
+            jumpCount = 0;
+        }
+    }
+
 
     public void Jump()
     {
-        if (jumpCount <= 0)
+        if (jumpCount < maxJumps)
         {
-            jumpCount++;
             rigidbody2D.AddForce(new Vector2(0, jumpForce));
+            jumpCount++;
         }
     }
     

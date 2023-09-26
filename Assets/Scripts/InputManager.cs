@@ -25,7 +25,7 @@ public class InputManager : MonoBehaviour
         }
 
         float horizontalAxis = Input.GetAxisRaw("Horizontal");
-        Debug.Log(horizontalAxis);
+        //Debug.Log(horizontalAxis);
         playerMovement.Move(horizontalAxis);
 
     }
