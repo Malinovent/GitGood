@@ -24,7 +24,7 @@ public class AudioManager : MonoBehaviour
 
     private List<AudioSource> audioSources = new List<AudioSource>();
 
-    [SerializeField] AudioClip[] soundEffects;
+    [SerializeField] SoundEffect[] soundEffects;
 
     private void Start()
     {
@@ -44,33 +44,39 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySoundEffect(string soundName)
     {
-        switch(soundName)
+        foreach (SoundEffect sfx in soundEffects)
         {
-            case "fireball":
-                //play fireball
-                PlaySoundEffect(0);
-                break;
-            case "iceball":
-                PlaySoundEffect(1);
-                //play iceball
-                break;
+            if(sfx.soundName == soundName)
+            {
+                PlaySoundEffect(sfx.audioClip);
+            }
         }
     }
 
-    public void PlaySoundEffect(int SFXindex)
+    public void PlaySoundEffect(AudioClip audioClip)
     {
         foreach(AudioSource audioSource in audioSources)
         {
             if(!audioSource.isPlaying)
             {
-                audioSource.clip = soundEffects[SFXindex];
+                audioSource.clip = audioClip;
                 audioSource.Play();
                 return;
             }
         }
 
+        //Create new audiosource if all of them are playing
         AudioSource createdAudioSource = CreateAudioSource();
-        createdAudioSource.clip = soundEffects[SFXindex];
+        createdAudioSource.clip = audioClip;
         createdAudioSource.Play();
     }
+}
+
+[System.Serializable]
+public struct SoundEffect
+{
+    public string soundName;
+    public AudioClip audioClip;
+
+
 }
